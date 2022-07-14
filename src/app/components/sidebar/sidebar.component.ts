@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { AppService } from "../../services/app.service";
 
 export interface RouteInfo {
   path: string;
@@ -42,6 +43,36 @@ export const ROUTES: RouteInfo[] = [
   },
 ];
 
+const AdminMenu: RouteInfo[] = [
+  {
+    path: "/dashboard",
+    title: "Dashboard",
+    type: "link",
+    icontype: "tim-icons icon-chart-pie-36",
+    rtlTitle: "لوحة القيادة",
+  },
+];
+
+const NormalMenu: RouteInfo[] = [
+  {
+    path: "/home",
+    title: "Home",
+    type: "link",
+    icontype: "tim-icons icon-chart-pie-36",
+    rtlTitle: "لوحة القيادة",
+  },
+];
+
+const WhiteListMenu: RouteInfo[] = [
+  {
+    path: "/white-list-mint",
+    title: "White List Mint",
+    type: "link",
+    icontype: "tim-icons icon-badge",
+    rtlTitle: "لوحة القيادة",
+  },
+];
+
 @Component({
   selector: "app-sidebar",
   templateUrl: "./sidebar.component.html",
@@ -50,9 +81,19 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
 
-  constructor() {}
+  constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
+    // this.menuItems = ROUTES.filter((menuItem) => menuItem);
+    this.initMenu();
+  }
+
+  initMenu() {
+    const menu: RouteInfo[] = [];
+    menu.push(...NormalMenu);
+    const user = this.appService.getUser();
+    if (this.appService.getIsAdmin() || user?.isAdmin) menu.push(...AdminMenu);
+    if (user?.isWhiteListed) menu.push(...WhiteListMenu);
+    this.menuItems = menu;
   }
 }

@@ -4,6 +4,7 @@
     "outDir": "../out-tsc/app",
     "module": "esnext",
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "types": []
   },
   "exclude": ["test.ts", "**/*.spec.ts"]

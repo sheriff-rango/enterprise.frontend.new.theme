@@ -5,17 +5,19 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
-import { RtlLayoutComponent } from "./layouts/rtl-layout/rtl-layout.component";
+// import { RtlLayoutComponent } from "./layouts/rtl-layout/rtl-layout.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "home",
     pathMatch: "full",
   },
   {
     path: "",
     component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: "",
@@ -24,42 +26,70 @@ const routes: Routes = [
             (x) => x.DashboardModule
           ),
       },
+      {
+        path: "home",
+        loadChildren: () =>
+          import("./pages/examples/home/home.module").then((x) => x.HomeModule),
+      },
       // {
       //   path: "components",
-      //   loadChildren: () => import('./pages/examples/components/components.module').then(x=>x.ComponentsPageModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/components/components.module").then(
+      //       (x) => x.ComponentsPageModule
+      //     ),
       // },
       // {
       //   path: "forms",
-      //   loadChildren: () => import('./pages/examples/forms/forms.module').then(x=>x.Forms)
+      //   loadChildren: () =>
+      //     import("./pages/examples/forms/forms.module").then((x) => x.Forms),
       // },
       // {
       //   path: "tables",
-      //   loadChildren: () => import('./pages/examples/tables/tables.module').then(x=>x.TablesModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/tables/tables.module").then(
+      //       (x) => x.TablesModule
+      //     ),
       // },
       // {
       //   path: "maps",
-      //   loadChildren: () => import('./pages/examples/maps/maps.module').then(x=>x.MapsModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/maps/maps.module").then((x) => x.MapsModule),
       // },
       // {
       //   path: "widgets",
-      //   loadChildren: () => import('./pages/examples/widgets/widgets.module').then(x=>x.WidgetsModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/widgets/widgets.module").then(
+      //       (x) => x.WidgetsModule
+      //     ),
       // },
       // {
       //   path: "charts",
-      //   loadChildren: () => import('./pages/examples/charts/charts.module').then(x=>x.ChartsModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/charts/charts.module").then(
+      //       (x) => x.ChartsModule
+      //     ),
       // },
       // {
       //   path: "calendar",
-      //   loadChildren: () => import('./pages/examples/calendar/calendar.module').then(x=>x.CalendarModulee)
+      //   loadChildren: () =>
+      //     import("./pages/examples/calendar/calendar.module").then(
+      //       (x) => x.CalendarModulee
+      //     ),
       // },
       // {
       //   path: "",
-      //   loadChildren: () => import('./pages/examples/pages/user/user-profile.module').then(x=>x.UserModule)
+      //   loadChildren: () =>
+      //     import("./pages/examples/pages/user/user-profile.module").then(
+      //       (x) => x.UserModule
+      //     ),
       // },
       // {
       //   path: "",
-      //   loadChildren: () => import('./pages/examples/pages/timeline/timeline.module').then(x=>x.TimelineModule)
-      // }
+      //   loadChildren: () =>
+      //     import("./pages/examples/pages/timeline/timeline.module").then(
+      //       (x) => x.TimelineModule
+      //     ),
+      // },
     ],
   },
   {
@@ -75,22 +105,22 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: "",
-    component: RtlLayoutComponent,
-    children: [
-      {
-        path: "pages",
-        loadChildren: () =>
-          import("./pages/examples/pages/rtl/rtl.module").then(
-            (x) => x.RtlModule
-          ),
-      },
-    ],
-  },
+  // {
+  //   path: "",
+  //   component: RtlLayoutComponent,
+  //   children: [
+  //     {
+  //       path: "pages",
+  //       loadChildren: () =>
+  //         import("./pages/examples/pages/rtl/rtl.module").then(
+  //           (x) => x.RtlModule
+  //         ),
+  //     },
+  //   ],
+  // },
   {
     path: "**",
-    redirectTo: "dashboard",
+    redirectTo: "home",
   },
 ];
 
