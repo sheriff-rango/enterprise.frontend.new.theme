@@ -58,7 +58,7 @@ const NormalMenu: RouteInfo[] = [
     path: "/home",
     title: "Home",
     type: "link",
-    icontype: "tim-icons icon-chart-pie-36",
+    icontype: "tim-icons icon-laptop",
     rtlTitle: "لوحة القيادة",
   },
 ];

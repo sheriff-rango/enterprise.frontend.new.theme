@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <h5 class=" card-title">Management Table</h5>
+          <h5 class=" card-title">User List</h5>
         </div>
         <div class=" card-body">
           <div class=" table-responsive">
@@ -31,216 +31,32 @@
               <thead class=" text-primary">
                 <tr>
                   <th class=" text-center">#</th>
-                  <th>Name</th>
-                  <th>Job Position</th>
-                  <th>Milestone</th>
-                  <th class=" text-right">Salary</th>
-                  <th class=" text-right">Actions</th>
+                  <th class=" text-center">Name</th>
+                  <th class=" text-center">Email</th>
+                  <th class=" text-center">Add/Remove to White List</th>
+                  <th class=" text-center" *ngIf="isAdmin">Set/Remove Admin</th>
+                  <th class=" text-center" *ngIf="isAdmin">Balance</th>
+                  <th class=" text-center" *ngIf="isAdmin">Send Token</th>
+                  <th class=" text-center" *ngIf="isAdmin">Get Token</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/tania.jpg" />
-                    </div>
+                <tr *ngFor="let user of source; let i = index">
+                  <td class=" text-center">{{i + 1}}</td>
+                  <td class=" text-center">{{user.first_name}} {{user.last_name}}</td>
+                  <td class=" text-center">{{user.email}}</td>
+                  <td class=" text-center" *ngIf="!user.isWhiteListed"><button class="add-button"  (click)="addRemoveToWhiteLists(user, 'true')">ADD</button></td>
+                  <td class=" text-center" *ngIf="!!user.isWhiteListed"><button *ngIf="isAdmin || user.whiteListBy === myHash" class="add-button"  (click)="addRemoveToWhiteLists(user, 'false')">REMOVE</button></td>
+                  <td class=" text-center" *ngIf="isAdmin && !user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'true')">SET</button></td>
+                  <td class=" text-center" *ngIf="isAdmin && !!user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'false')">REMOVE</button></td>
+                  <td class=" text-center" *ngIf="isAdmin">{{user.balance}}</td>
+                  <td class=" text-center" *ngIf="isAdmin">
+                    <input id={{user.sendId}} class='amount-input'/>
+                    <button class="add-button" (click)="sendToken(user)">SEND</button>
                   </td>
-                  <td>Tania Mike</td>
-                  <td>Develop</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 25% </span>
-                        <progressbar [value]="25"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 99,225</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-icon btn-sm btn-simple"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-icon btn-sm btn-simple"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/robi.jpg" />
-                    </div>
-                  </td>
-                  <td>John Doe</td>
-                  <td>CEO</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 77% </span>
-                        <progressbar [value]="77"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 89,241</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-sm btn-icon btn-simple"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-sm btn-icon btn-simple"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/lora.jpg" />
-                    </div>
-                  </td>
-                  <td>Alexa Mike</td>
-                  <td>Design</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 41% </span>
-                        <progressbar [value]="41"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 92,144</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-icon btn-sm btn-simple"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-icon btn-sm btn-simple"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/jana.jpg" />
-                    </div>
-                  </td>
-                  <td>Jana Monday</td>
-                  <td>Marketing</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 50% </span>
-                        <progressbar [value]="50"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 49,990</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-sm btn-icon"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-sm btn-icon"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/mike.jpg" />
-                    </div>
-                  </td>
-                  <td>Paul Dickens</td>
-                  <td>Develop</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 100% </span>
-                        <progressbar [value]="100"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 69,201</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-sm btn-icon"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-sm btn-icon"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class=" text-center">
-                    <div class=" photo">
-                      <img alt="photo" src="assets/img/emilyz.jpg" />
-                    </div>
-                  </td>
-                  <td>Manuela Rico</td>
-                  <td>Manager</td>
-                  <td class=" text-center">
-                    <div class=" progress-container progress-sm">
-                      <div class=" progress">
-                        <span class=" progress-value"> 15% </span>
-                        <progressbar [value]="15"> </progressbar>
-                      </div>
-                    </div>
-                  </td>
-                  <td class=" text-right">€ 99,201</td>
-                  <td class=" text-right">
-                    <button
-                      class=" btn btn-success btn-link btn-sm btn-icon"
-                      tooltip="Refresh"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-refresh-01"> </i>
-                    </button>
-                    <button
-                      class=" btn btn-danger btn-link btn-sm btn-icon"
-                      tooltip="Delete"
-                      type="button"
-                    >
-                      <i class=" tim-icons icon-simple-remove"> </i>
-                    </button>
+                  <td class=" text-center" *ngIf="isAdmin">
+                    <input id={{user.getId}} class='amount-input'/>
+                    <button class="add-button" (click)="getToken(user)">GET</button>
                   </td>
                 </tr>
               </tbody>

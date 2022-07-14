@@ -82,7 +82,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: (data) => {
           const result = JSON.parse(data);
           const users = result?.users;
-          console.log("users", users);
           if (!users || users.length == 0) {
             window.localStorage.setItem(
               "account-info",
@@ -91,13 +90,11 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(["/auth/register"]);
           } else {
             const user = users[0];
-            console.log("user", user);
             this.appService.setUser(user, storeObject);
             const isAdmin = this.appService.getIsAdmin();
             if (!isAdmin && !!user.isWhiteListed) {
               this.router.navigate(["/auth/whitelist"]);
             } else {
-              console.log("here");
               this.appService.setLogged(true);
               this.router.navigate(["/home"]);
             }
