@@ -3,14 +3,15 @@ import { ROUTES } from "../sidebar/sidebar.component";
 import { Location } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
+import { AppService } from "src/app/services/app.service";
 
 var misc: any = {
-  sidebar_mini_active: true
+  sidebar_mini_active: true,
 };
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.css"]
+  styleUrls: ["./navbar.component.css"],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   private listTitles: any[];
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     location: Location,
     private element: ElementRef,
+    private appService: AppService,
     private router: Router,
     public toastr: ToastrService
   ) {
@@ -49,20 +51,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (misc.sidebar_mini_active === true) {
       body.classList.remove("sidebar-mini");
       misc.sidebar_mini_active = false;
-      this.showSidebarMessage("Sidebar mini deactivated...");
+      // this.showSidebarMessage("Sidebar mini deactivated...");
     } else {
       body.classList.add("sidebar-mini");
-      this.showSidebarMessage("Sidebar mini activated...");
+      // this.showSidebarMessage("Sidebar mini activated...");
       misc.sidebar_mini_active = true;
     }
 
     // we simulate the window Resize so the charts will get updated in realtime.
-    const simulateWindowResize = setInterval(function() {
+    const simulateWindowResize = setInterval(function () {
       window.dispatchEvent(new Event("resize"));
     }, 180);
 
     // we stop the simulation of Window Resize after the animations are completed
-    setTimeout(function() {
+    setTimeout(function () {
       clearInterval(simulateWindowResize);
     }, 1000);
   }
@@ -75,16 +77,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
         closeButton: true,
         enableHtml: true,
         toastClass: "alert alert-danger alert-with-icon",
-        positionClass: "toast-top-right"
+        positionClass: "toast-top-right",
       }
     );
   }
   ngOnInit() {
     window.addEventListener("resize", this.updateColor);
-    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.listTitles = ROUTES.filter((listTitle) => listTitle);
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName("navbar-toggler")[0];
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       this.sidebarClose();
     });
   }
@@ -106,61 +108,62 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   sidebarOpen() {
     const toggleButton = this.toggleButton;
-    const body = <HTMLElement>(
-      document.getElementsByTagName("body")[0]
-    );
+    const body = <HTMLElement>document.getElementsByTagName("body")[0];
     const html = document.getElementsByTagName("html")[0];
     if (window.innerWidth < 991) {
       body.style.position = "fixed";
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
       toggleButton.classList.add("toggled");
     }, 500);
 
     html.classList.add("nav-open");
-    var $layer = document.createElement('div');
-    $layer.setAttribute('id', 'bodyClick');
+    var $layer = document.createElement("div");
+    $layer.setAttribute("id", "bodyClick");
 
-
-    if (html.getElementsByTagName('body')) {
-        document.getElementsByTagName('body')[0].appendChild($layer);
+    if (html.getElementsByTagName("body")) {
+      document.getElementsByTagName("body")[0].appendChild($layer);
     }
     var $toggle = document.getElementsByClassName("navbar-toggler")[0];
-    $layer.onclick = function() { //asign a function
-      html.classList.remove('nav-open');
-      setTimeout(function() {
-          $layer.remove();
-          $toggle.classList.remove('toggled');
+    $layer.onclick = function () {
+      //asign a function
+      html.classList.remove("nav-open");
+      setTimeout(function () {
+        $layer.remove();
+        $toggle.classList.remove("toggled");
       }, 400);
-      const mainPanel =  <HTMLElement>document.getElementsByClassName('main-panel')[0];
+      const mainPanel = <HTMLElement>(
+        document.getElementsByClassName("main-panel")[0]
+      );
 
       if (window.innerWidth < 991) {
-        setTimeout(function(){
-          mainPanel.style.position = '';
+        setTimeout(function () {
+          mainPanel.style.position = "";
         }, 500);
       }
     }.bind(this);
 
-    html.classList.add('nav-open');
+    html.classList.add("nav-open");
   }
   sidebarClose() {
     const html = document.getElementsByTagName("html")[0];
     this.toggleButton.classList.remove("toggled");
-    const body = <HTMLElement>(
-      document.getElementsByTagName("body")[0]
-    );
+    const body = <HTMLElement>document.getElementsByTagName("body")[0];
 
     if (window.innerWidth < 991) {
-      setTimeout(function() {
+      setTimeout(function () {
         body.style.position = "";
       }, 500);
     }
     var $layer: any = document.getElementById("bodyClick");
     if ($layer) {
       $layer.remove();
-
     }
     html.classList.remove("nav-open");
+  }
+  logout() {
+    this.appService.clearUser();
+    this.router.navigate(["/auth/login"]);
   }
 }

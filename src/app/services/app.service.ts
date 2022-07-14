@@ -1,0 +1,53 @@
+import { Injectable } from "@angular/core";
+import { AccountInfo, MintInfo, User } from "../types/account";
+
+@Injectable()
+export class AppService {
+  userInfo: User;
+  mintInfo: MintInfo;
+  isAdmin: boolean;
+  logged: boolean;
+
+  constructor() {
+    this.userInfo = null;
+  }
+
+  setUser(user: User, walletInfo: AccountInfo): void {
+    this.userInfo = user;
+    this.isAdmin = this.mintInfo.owner === this.userInfo?.address;
+    window.localStorage.setItem("account-info", JSON.stringify(walletInfo));
+  }
+
+  clearUser() {
+    this.userInfo = null;
+    this.logged = false;
+    window.localStorage.clear();
+  }
+
+  getUser(): User {
+    return this.userInfo;
+  }
+
+  isLogged(): boolean {
+    return this.logged;
+  }
+
+  setLogged(logged: boolean) {
+    this.logged = logged;
+  }
+
+  setMintInfo(mintInfo: MintInfo) {
+    this.mintInfo = mintInfo;
+    this.isAdmin = this.mintInfo.owner === this.userInfo?.address;
+    window.localStorage.setItem("isAdmin", JSON.stringify(this.isAdmin));
+    window.localStorage.setItem("mint-info", JSON.stringify(mintInfo));
+  }
+
+  getMintInfo() {
+    return this.mintInfo;
+  }
+
+  getIsAdmin() {
+    return this.isAdmin;
+  }
+}

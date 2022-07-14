@@ -7,9 +7,9 @@
             <div class=" card-header">
               <img alt="" src="assets/img/card-primary.png" />
 
-              <h1 class=" card-title">Log in</h1>
+              <h1 class=" card-title">Connect Wallet</h1>
             </div>
-            <div class=" card-body">
+            <!-- <div class=" card-body">
               <div
                 class=" input-group"
                 [ngClass]="{ 'input-group-focus': focus === true }"
@@ -44,12 +44,12 @@
                   (focus)="focus1 = true"
                 />
               </div>
-            </div>
+            </div> -->
             <div class=" card-footer">
-              <a class=" btn btn-primary btn-lg btn-block mb-3" href="#pablo">
-                Get Started
+              <a class=" btn btn-primary btn-lg btn-block mb-3" (click)="connectWallet()">
+                Connect
               </a>
-              <div class=" pull-left">
+              <!-- <div class=" pull-left">
                 <h6>
                   <a class=" link footer-link" href="javascript:void(0)">
                     Create Account
@@ -62,7 +62,7 @@
                     Need Help?
                   </a>
                 </h6>
-              </div>
+              </div> -->
             </div>
           </div>
         </form>
