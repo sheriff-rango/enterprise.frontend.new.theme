@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   myHash: string;
   isLoadingData: boolean = false;
+  isPendingTx: { [key: string]: boolean } = {};
   constructor(
     private userService: UserService,
     private appService: AppService,
@@ -33,7 +34,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   loadData() {
-    // this.source = [];
     this.isLoadingData = true;
     const account = this.appService.getUser();
     this.userService.getAdminBoard().subscribe({
@@ -56,16 +56,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
           }
         });
-        // console.log("queries", queries);
-        // if (queries.length) {
-        //   Promise.all(queries).then((queryResults) => {
-        //     queryResults.forEach((queryResult, index) => {
-        //       this.source[index].balance = `${(
-        //         +queryResult.amount / 1e6
-        //       ).toFixed(2)}JUNO`;
-        //     });
-        //   });
-        // }
         this.isLoadingData = false;
         this.source = result;
       },

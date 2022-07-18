@@ -33,7 +33,6 @@ export class WhitelistLoginRegisterComponent implements OnInit, OnDestroy {
     if (!user) {
       this.router.navigate(["/auth/login"]);
     }
-    console.log("user", user);
     this.user = user;
   }
   ngOnDestroy() {
