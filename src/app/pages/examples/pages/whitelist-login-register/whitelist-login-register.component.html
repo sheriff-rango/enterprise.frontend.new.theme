@@ -48,10 +48,9 @@
                 class=" card-img"
                 src="assets/img/card-primary.png"
               />
-              <h4 class="card-title" *ngIf="!user.registered">WhiteList Register</h4>
-              <h4 class="card-title" *ngIf="user.registered">WhiteList Login</h4>
+              <h4 class="card-title">WhiteList {{user.registered? 'Login' : 'Register'}}</h4>
             </div>
-            <div class=" card-body" *ngIf="!user.registered">
+            <div class=" card-body">
               <form class=" form">
                 <div
                   class=" input-group"
@@ -59,45 +58,55 @@
                 >
                   <div class=" input-group-prepend">
                     <div class=" input-group-text">
-                      <i class=" tim-icons icon-single-02"> </i>
+                      <i class=" tim-icons icon-key-25"> </i>
                     </div>
                   </div>
                   <input
                     class=" form-control"
                     placeholder="Password"
-                    type="text"
+                    type="password"
                     (blur)="focus_password = false"
                     (focus)="focus_password = true"
                     (input)="onChangeFormData('password', $event)"
                   />
                 </div>
                 <div
-                  class=" input-group"
+                  *ngIf="!user.registered"
+                  class=" input-group" 
                   [ngClass]="{ 'input-group-focus': focus_confirm_password === true }"
                 >
                   <div class=" input-group-prepend">
                     <div class=" input-group-text">
-                      <i class=" tim-icons icon-single-02"> </i>
+                      <i class=" tim-icons icon-key-25"> </i>
                     </div>
                   </div>
                   <input
                     class=" form-control"
                     placeholder="Confirm Password"
-                    type="text"
+                    type="password"
                     (blur)="focus_confirm_password = false"
                     (focus)="focus_confirm_password = true"
-                    (input)="onChangeFormData('confirmPassword', $event)"
+                    (input)="onChangeFormData('passwordConfirm', $event)"
                   />
                 </div>
               </form>
             </div>
             <div class=" card-footer">
               <a
+                *ngIf="!user.registered"
                 class=" btn btn-primary btn-round btn-lg"
                 href="javascript:void(0)"
                 (click)="register()"
               >
                 Register
+              </a>
+              <a
+                *ngIf="user.registered"
+                class=" btn btn-primary btn-round btn-lg"
+                href="javascript:void(0)"
+                (click)="login()"
+              >
+                Login
               </a>
             </div>
           </div>

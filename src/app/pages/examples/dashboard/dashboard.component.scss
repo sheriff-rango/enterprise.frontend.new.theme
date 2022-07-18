@@ -3,11 +3,35 @@
   .card {
     .table-responsive {
       overflow: auto;
+      color: white;
+      tr {
+        th {
+          font-weight: bold;
+        }
+        td {
+          position: relative;
+        }
+      }
       .loading-title {
         text-align: center;
       }
       .amount-input {
+        width: 100%
+      }
+      .user-action-button {
+        margin: 0 5px;
+      }
+      .input-container {
+        position: relative;
         max-width: 80px;
+        display: inline-block;
+        .max-button {
+          position: absolute;
+          top: 6px;
+          right: 10px;
+          cursor: pointer;
+          color: #e14eca;
+        }
       }
     }
   }

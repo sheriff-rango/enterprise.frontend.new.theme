@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { API_URL } from "../../environments/config";
+import { AppService } from "src/app/services/app.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private appService: AppService) {}
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + "all", { responseType: "text" });
@@ -31,10 +32,15 @@ export class UserService {
   }
 
   getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + "get-user", { responseType: "text" });
+    return this.http.get(API_URL + "get-user", {
+      responseType: "text",
+      headers: new HttpHeaders({
+        account: this.appService.getUser().hash,
+      }),
+    });
   }
 
-  getToken(amount, hash, accountHash): Observable<any> {
+  getToken(amount, hash): Observable<any> {
     return this.http.post(
       API_URL + "get-token",
       {
@@ -44,7 +50,7 @@ export class UserService {
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json",
-          account: accountHash,
+          account: this.appService.getUser().hash,
         }),
       }
     );

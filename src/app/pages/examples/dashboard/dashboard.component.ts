@@ -74,15 +74,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   addRemoveToWhiteLists(user, isWhiteListed) {
-    const account = this.appService.getUser();
-    this.authService
-      .setWhiteList(user.hash, account.hash, isWhiteListed)
-      .subscribe({
-        next: (data) => {
-          this.loadData();
-        },
-        error: (err) => {},
-      });
+    this.authService.setWhiteList(user.hash, isWhiteListed).subscribe({
+      next: (data) => {
+        this.loadData();
+      },
+      error: (err) => {},
+    });
   }
 
   async setRemoveAdmin(user, isAdmin) {
@@ -99,8 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           : { admin: user.custom_wallet_address }),
       },
     });
-    const account = this.appService.getUser();
-    this.authService.setAdmin(user.hash, account.hash, isAdmin).subscribe({
+    this.authService.setAdmin(user.hash, isAdmin).subscribe({
       next: (data) => {
         this.notificationService.pushSuccessMsg({
           title: "Set Admin.",
@@ -137,11 +133,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async getToken(user) {
-    const storedObjectString = window.localStorage.getItem("account-info");
-    const storedObject = storedObjectString
-      ? JSON.parse(storedObjectString)
-      : null;
-
     const inputElement: any = document.getElementById(`get-${user.hash}`);
     const amount = Number(inputElement.value);
     if (amount > user.balance) {
@@ -152,24 +143,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
     if (!isNaN(amount) && amount) {
-      this.userService
-        .getToken(amount, user.hash, storedObject.hash)
-        .subscribe({
-          next: (data) => {
-            inputElement.value = "";
-            this.notificationService.pushSuccessMsg({
-              title: "Get Token",
-              string: `The amount ${amount} has been received successfully!`,
-            });
-            this.loadData();
-          },
-          error: (err) => {
-            this.notificationService.pushErrorMsg({
-              title: "Get Token",
-              string: err.error,
-            });
-          },
-        });
+      this.userService.getToken(amount, user.hash).subscribe({
+        next: (data) => {
+          inputElement.value = "";
+          this.notificationService.pushSuccessMsg({
+            title: "Get Token",
+            string: `The amount ${amount} has been received successfully!`,
+          });
+          this.loadData();
+        },
+        error: (err) => {
+          this.notificationService.pushErrorMsg({
+            title: "Get Token",
+            string: err.error,
+          });
+        },
+      });
     }
   }
 }

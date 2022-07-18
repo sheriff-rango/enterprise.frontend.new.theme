@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { API_URL } from "../../environments/config";
+import { AppService } from "src/app/services/app.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" }),
@@ -11,7 +12,7 @@ const httpOptions = {
   providedIn: "root",
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private appService: AppService) {}
 
   register(
     firstName: string,
@@ -54,11 +55,7 @@ export class AuthService {
     );
   }
 
-  setWhiteList(
-    hash: string,
-    accountHash,
-    isWhiteListed: string
-  ): Observable<any> {
+  setWhiteList(hash: string, isWhiteListed: string): Observable<any> {
     // if (!isWhiteListed || !hash || !accountHash) return;
     return this.http.post(
       API_URL + "set-whitelist",
@@ -66,17 +63,13 @@ export class AuthService {
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json",
-          account: accountHash,
+          account: this.appService.getUser().hash,
         }),
       }
     );
   }
 
-  setAdmin(
-    hash: string,
-    accountHash: string,
-    isAdmin: string
-  ): Observable<any> {
+  setAdmin(hash: string, isAdmin: string): Observable<any> {
     // if (!hash || !accountHash || !isAdmin) return;
     return this.http.post(
       API_URL + "set-admin",
@@ -84,7 +77,7 @@ export class AuthService {
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json",
-          account: accountHash,
+          account: this.appService.getUser().hash,
         }),
       }
     );

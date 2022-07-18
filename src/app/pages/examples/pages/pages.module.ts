@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { LoginComponent } from "./login/login.component";
 import { LockComponent } from "./lock/lock.component";
 import { RegisterComponent } from "./register/register.component";
+import { WhitelistLoginRegisterComponent } from "./whitelist-login-register/whitelist-login-register.component";
 import { PricingComponent } from "./pricing/pricing.component";
 import { PagesRoutes } from "./pages.routing";
 import { CollapseModule } from "ngx-bootstrap/collapse";
@@ -18,13 +19,14 @@ import { TooltipModule } from "ngx-bootstrap/tooltip";
     BsDropdownModule.forRoot(),
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
   ],
   declarations: [
     LoginComponent,
     LockComponent,
     RegisterComponent,
-    PricingComponent
-  ]
+    WhitelistLoginRegisterComponent,
+    PricingComponent,
+  ],
 })
 export class PagesModule {}

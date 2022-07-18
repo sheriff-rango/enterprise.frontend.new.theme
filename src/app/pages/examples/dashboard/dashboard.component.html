@@ -64,18 +64,23 @@
                   <td class=" text-center">{{i + 1}}</td>
                   <td class=" text-center">{{user.first_name}} {{user.last_name}}</td>
                   <td class=" text-center">{{user.email}}</td>
-                  <td class=" text-center" *ngIf="!user.isWhiteListed"><button class="add-button"  (click)="addRemoveToWhiteLists(user, 'true')">ADD</button></td>
-                  <td class=" text-center" *ngIf="!!user.isWhiteListed"><button *ngIf="isAdmin || user.whiteListBy === myHash" class="add-button"  (click)="addRemoveToWhiteLists(user, 'false')">REMOVE</button></td>
-                  <td class=" text-center" *ngIf="isAdmin && !user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'true')">SET</button></td>
-                  <td class=" text-center" *ngIf="isAdmin && !!user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'false')">REMOVE</button></td>
+                  <td class=" text-center" *ngIf="!user.isWhiteListed"><a class=" btn btn-primary btn-sm"  (click)="addRemoveToWhiteLists(user, 'true')">ADD</a></td>
+                  <td class=" text-center" *ngIf="!!user.isWhiteListed"><a *ngIf="isAdmin || user.whiteListBy === myHash" class=" btn btn-primary btn-sm"  (click)="addRemoveToWhiteLists(user, 'false')">REMOVE</a></td>
+                  <td class=" text-center" *ngIf="isAdmin && !user.isAdmin"><a class=" btn btn-primary btn-sm"  (click)="setRemoveAdmin(user, 'true')">SET</a></td>
+                  <td class=" text-center" *ngIf="isAdmin && !!user.isAdmin"><a class=" btn btn-primary btn-sm"  (click)="setRemoveAdmin(user, 'false')">REMOVE</a></td>
                   <td class=" text-center" *ngIf="isAdmin">{{user.balanceString}}</td>
                   <td class=" text-center" *ngIf="isAdmin">
-                    <input id={{user.sendId}} class='amount-input'/>
-                    <button class="add-button" (click)="sendToken(user)">SEND</button>
+                    <div class="input-container">
+                      <input id={{user.sendId}} class='amount-input'/>
+                    </div>
+                    <a class=" btn btn-primary btn-sm user-action-button" (click)="sendToken(user)">SEND</a>
                   </td>
                   <td class=" text-center" *ngIf="isAdmin">
-                    <input id={{user.getId}} class='amount-input'/>
-                    <button class="add-button" (click)="getToken(user)">GET</button>
+                    <div class="input-container">
+                      <input id={{user.getId}} class='amount-input'/>
+                      <i class=" icon-coins tim-icons max-button" (click)="setMaxAmount(user)"></i>
+                    </div>
+                    <a class=" btn btn-primary btn-sm user-action-button" (click)="getToken(user)">GET</a>
                   </td>
                 </tr>
               </tbody>
