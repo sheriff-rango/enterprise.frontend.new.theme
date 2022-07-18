@@ -31,65 +31,6 @@ const routes: Routes = [
         loadChildren: () =>
           import("./pages/examples/home/home.module").then((x) => x.HomeModule),
       },
-      // {
-      //   path: "components",
-      //   loadChildren: () =>
-      //     import("./pages/examples/components/components.module").then(
-      //       (x) => x.ComponentsPageModule
-      //     ),
-      // },
-      // {
-      //   path: "forms",
-      //   loadChildren: () =>
-      //     import("./pages/examples/forms/forms.module").then((x) => x.Forms),
-      // },
-      // {
-      //   path: "tables",
-      //   loadChildren: () =>
-      //     import("./pages/examples/tables/tables.module").then(
-      //       (x) => x.TablesModule
-      //     ),
-      // },
-      // {
-      //   path: "maps",
-      //   loadChildren: () =>
-      //     import("./pages/examples/maps/maps.module").then((x) => x.MapsModule),
-      // },
-      // {
-      //   path: "widgets",
-      //   loadChildren: () =>
-      //     import("./pages/examples/widgets/widgets.module").then(
-      //       (x) => x.WidgetsModule
-      //     ),
-      // },
-      // {
-      //   path: "charts",
-      //   loadChildren: () =>
-      //     import("./pages/examples/charts/charts.module").then(
-      //       (x) => x.ChartsModule
-      //     ),
-      // },
-      // {
-      //   path: "calendar",
-      //   loadChildren: () =>
-      //     import("./pages/examples/calendar/calendar.module").then(
-      //       (x) => x.CalendarModulee
-      //     ),
-      // },
-      // {
-      //   path: "",
-      //   loadChildren: () =>
-      //     import("./pages/examples/pages/user/user-profile.module").then(
-      //       (x) => x.UserModule
-      //     ),
-      // },
-      // {
-      //   path: "",
-      //   loadChildren: () =>
-      //     import("./pages/examples/pages/timeline/timeline.module").then(
-      //       (x) => x.TimelineModule
-      //     ),
-      // },
     ],
   },
   {

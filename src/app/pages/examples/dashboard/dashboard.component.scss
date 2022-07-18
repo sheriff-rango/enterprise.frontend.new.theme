@@ -3,6 +3,12 @@
   .card {
     .table-responsive {
       overflow: auto;
+      .loading-title {
+        text-align: center;
+      }
+      .amount-input {
+        max-width: 80px;
+      }
     }
   }
 }
