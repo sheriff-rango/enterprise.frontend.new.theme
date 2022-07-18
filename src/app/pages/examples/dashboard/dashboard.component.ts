@@ -5,6 +5,7 @@ import { AppService } from "../../../services/app.service";
 import { AuthService } from "../../../services/auth.service";
 import { KeplrService } from "../../../services/keplr.service";
 import { contractAddress } from "../../../../environments/config";
+import { NotificationService } from "../../../services/notification.service";
 
 @Component({
   selector: "app-dashboard",
@@ -16,11 +17,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   source: any;
   isAdmin: boolean;
   myHash: string;
+  isLoadingData: boolean = false;
   constructor(
     private userService: UserService,
     private appService: AppService,
     private authService: AuthService,
-    private keplrService: KeplrService
+    private keplrService: KeplrService,
+    private notificationService: NotificationService
   ) {
     this.isAdmin = this.appService.getIsAdmin();
     this.myHash = this.appService.getUser().hash;
@@ -31,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadData() {
     // this.source = [];
+    this.isLoadingData = true;
     const account = this.appService.getUser();
     this.userService.getAdminBoard().subscribe({
       next: (data) => {
@@ -39,18 +43,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // queries = [];
         parsed.data.forEach((user) => {
           if (account.address !== user.address) {
-            if (this.isAdmin) {
+            if (this.isAdmin || !user.isAdmin) {
               result.push({
                 ...user,
-                sendId: `send-${user.hash}`,
-                getId: `get-${user.hash}`,
-              });
-              // queries.push(
-              //   this.keplrService.getBalance(user.custom_wallet_address)
-              // );
-            } else if (!user.isAdmin) {
-              result.push({
-                ...user,
+                balanceString: `${user.balance.toFixed(2)}JUNO`,
                 sendId: `send-${user.hash}`,
                 getId: `get-${user.hash}`,
               });
@@ -70,6 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         //     });
         //   });
         // }
+        this.isLoadingData = false;
         this.source = result;
       },
       error: (err) => {},
@@ -105,6 +102,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const account = this.appService.getUser();
     this.authService.setAdmin(user.hash, account.hash, isAdmin).subscribe({
       next: (data) => {
+        this.notificationService.pushSuccessMsg({
+          title: "Set Admin.",
+          string: `${user.firstName} ${user.lastName} has been ${
+            isAdmin === "true" ? "set as an Admin" : "removed from Admin"
+          } successfully!`,
+        });
         this.loadData();
       },
       error: (err) => {},
@@ -119,9 +122,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const inputElement: any = document.getElementById(`send-${user.hash}`);
     const amount = Number(inputElement.value);
     if (!isNaN(amount) && amount) {
-      await this.keplrService.sendToken(amount, user.custom_wallet_address);
-      inputElement.value = "";
-      this.loadData();
+      try {
+        await this.keplrService.sendToken(amount, user.custom_wallet_address);
+        inputElement.value = "";
+        this.notificationService.pushSuccessMsg({
+          title: "Send Token",
+          string: `The amount ${amount} has been sent successfully!`,
+        });
+        this.loadData();
+      } catch (err) {
+        console.error("send token error", err);
+      }
     }
   }
 
@@ -133,16 +144,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const inputElement: any = document.getElementById(`get-${user.hash}`);
     const amount = Number(inputElement.value);
+    if (amount > user.balance) {
+      this.notificationService.pushErrorMsg({
+        title: "Get Token",
+        string: `Insufficient funds. Amount is greater than balance(${user.balance})`,
+      });
+      return;
+    }
     if (!isNaN(amount) && amount) {
       this.userService
         .getToken(amount, user.hash, storedObject.hash)
         .subscribe({
           next: (data) => {
             inputElement.value = "";
+            this.notificationService.pushSuccessMsg({
+              title: "Get Token",
+              string: `The amount ${amount} has been received successfully!`,
+            });
             this.loadData();
           },
           error: (err) => {
-            console.log("fail", err);
+            this.notificationService.pushErrorMsg({
+              title: "Get Token",
+              string: err.error,
+            });
           },
         });
     }

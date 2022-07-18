@@ -15,6 +15,7 @@ import { ComponentsModule } from "./components/components.module";
 import { RtlLayoutComponent } from "./layouts/rtl-layout/rtl-layout.component";
 import { AppService } from "./services/app.service";
 import { AuthGuard } from "./guards/auth.guard";
+import { NotificationService } from "./services/notification.service";
 
 const GUARDS = [AuthGuard];
 
@@ -35,7 +36,7 @@ const GUARDS = [AuthGuard];
     ComponentsModule,
     HttpClientModule,
   ],
-  providers: [AppService, ...GUARDS],
+  providers: [AppService, NotificationService, ...GUARDS],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

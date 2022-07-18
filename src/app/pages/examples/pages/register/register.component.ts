@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 import { AuthService } from "../../../../services/auth.service";
 import { AppService } from "../../../../services/app.service";
 import { UserService } from "../../../../services/user.service";
-import { Router } from "@angular/router";
+import { NotificationService } from "../../../../services/notification.service";
 
 @Component({
   selector: "app-register",
@@ -21,6 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private appService: AppService,
     private userService: UserService,
+    private NotificationService: NotificationService,
     protected router: Router
   ) {}
 
@@ -38,35 +40,33 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.formData[key] = value;
   }
 
-  showErrorMessage(message) {
-    this.toastr.show(
-      '<span data-notify="icon" class="tim-icons icon-bell-55"></span>',
-      message,
-      {
-        timeOut: 4000,
-        closeButton: true,
-        enableHtml: true,
-        toastClass: "alert alert-danger alert-with-icon",
-        positionClass: "toast-top-right",
-      }
-    );
-  }
-
   register() {
     if (!this.formData.firstName) {
-      this.showErrorMessage("Please input First Name!");
+      this.NotificationService.pushErrorMsg({
+        title: "Form Validation Error.",
+        string: "Please input First Name!",
+      });
       return;
     }
     if (!this.formData.lastName) {
-      this.showErrorMessage("Please input Last Name!");
+      this.NotificationService.pushErrorMsg({
+        title: "Form Validation Error.",
+        string: "Please input Last Name!",
+      });
       return;
     }
     if (!this.formData.email) {
-      this.showErrorMessage("Please input Email!");
+      this.NotificationService.pushErrorMsg({
+        title: "Form Validation Error.",
+        string: "Please input Email!",
+      });
       return;
     }
     if (!this.formData.entityId) {
-      this.showErrorMessage("Please input First Name!");
+      this.NotificationService.pushErrorMsg({
+        title: "Form Validation Error.",
+        string: "Please input EntityId!",
+      });
       return;
     }
     const { firstName, lastName, email, entityId } = this.formData;

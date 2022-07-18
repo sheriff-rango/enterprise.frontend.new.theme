@@ -27,7 +27,7 @@
         </div>
         <div class=" card-body">
           <div class=" table-responsive">
-            <table class=" table">
+            <table *ngIf="isLoadingData" class=" table">
               <thead class=" text-primary">
                 <tr>
                   <th class=" text-center">#</th>
@@ -41,6 +41,25 @@
                 </tr>
               </thead>
               <tbody>
+                <td colspan="8">
+                  <div class=" loading-title">Lading Data. Please Wait...</div>
+                </td>
+              </tbody>
+            </table>
+            <table *ngIf="!isLoadingData" class=" table">
+              <thead class=" text-primary">
+                <tr>
+                  <th class=" text-center">#</th>
+                  <th class=" text-center">Name</th>
+                  <th class=" text-center">Email</th>
+                  <th class=" text-center">Add/Remove to White List</th>
+                  <th class=" text-center" *ngIf="isAdmin">Set/Remove Admin</th>
+                  <th class=" text-center" *ngIf="isAdmin">Balance</th>
+                  <th class=" text-center" *ngIf="isAdmin">Send Token</th>
+                  <th class=" text-center" *ngIf="isAdmin">Get Token</th>
+                </tr>
+              </thead>
+              <tbody  >
                 <tr *ngFor="let user of source; let i = index">
                   <td class=" text-center">{{i + 1}}</td>
                   <td class=" text-center">{{user.first_name}} {{user.last_name}}</td>
@@ -49,7 +68,7 @@
                   <td class=" text-center" *ngIf="!!user.isWhiteListed"><button *ngIf="isAdmin || user.whiteListBy === myHash" class="add-button"  (click)="addRemoveToWhiteLists(user, 'false')">REMOVE</button></td>
                   <td class=" text-center" *ngIf="isAdmin && !user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'true')">SET</button></td>
                   <td class=" text-center" *ngIf="isAdmin && !!user.isAdmin"><button class="add-button"  (click)="setRemoveAdmin(user, 'false')">REMOVE</button></td>
-                  <td class=" text-center" *ngIf="isAdmin">{{user.balance}}</td>
+                  <td class=" text-center" *ngIf="isAdmin">{{user.balanceString}}</td>
                   <td class=" text-center" *ngIf="isAdmin">
                     <input id={{user.sendId}} class='amount-input'/>
                     <button class="add-button" (click)="sendToken(user)">SEND</button>
