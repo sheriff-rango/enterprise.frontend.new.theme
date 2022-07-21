@@ -41,4 +41,5 @@ export default config["juno-uni"];
 export const contractAddress =
   "juno1z85xze7aqu07gemy35ht7yjtctjrpuhplmhfedq4hr3w6740kejqzhq2pt";
 
-export const API_URL = "http://localhost:4000/api/";
+// export const API_URL = "http://localhost:4000/api/";
+export const API_URL = "https://derp-enterprise-backend.herokuapp.com/api/";

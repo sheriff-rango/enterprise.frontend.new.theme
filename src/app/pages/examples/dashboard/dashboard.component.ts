@@ -31,10 +31,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    setInterval(() => {
+      this.loadData(true);
+    }, 1000);
+  }
 
-  loadData() {
-    this.isLoadingData = true;
+  loadData(preventRefresh = false) {
+    if (!preventRefresh) {
+      this.isLoadingData = true;
+    }
     const account = this.appService.getUser();
     this.userService.getAdminBoard().subscribe({
       next: (data) => {
